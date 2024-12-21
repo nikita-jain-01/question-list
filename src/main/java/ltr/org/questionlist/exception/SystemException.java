@@ -3,6 +3,7 @@ package ltr.org.questionlist.exception;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,97 +76,97 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({DataNotFoundException.class})
     public ResponseEntity<ErrorDetails> handleNoDataFoundException(DataNotFoundException exception) {
-        this.error = new ErrorDetails(404, this.convertToList(exception.getMsg()));
+        this.error = new ErrorDetails(404, this.convertToList(exception.getMsg()), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorDetails> handleGenericException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(exception.getMessage()));
+        this.error = new ErrorDetails(400, this.convertToList(exception.getMessage()), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({UserValidationException.class})
     public ResponseEntity<ErrorDetails> userValidationException(UserValidationException userValidationException) {
-        this.error = new ErrorDetails(400, this.convertToList(userValidationException.getMsg()));
+        this.error = new ErrorDetails(400, this.convertToList(userValidationException.getMsg()), new Date());
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({PatternSyntaxException.class})
     public ResponseEntity<ErrorDetails> handlePatternSyntaxException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.patternSyntaxException));
+        this.error = new ErrorDetails(400, this.convertToList(this.patternSyntaxException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({JpaSystemException.class})
     public ResponseEntity<ErrorDetails> handleJpaSystemException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.jpaSystemException));
+        this.error = new ErrorDetails(400, this.convertToList(this.jpaSystemException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({NullPointerException.class})
     public ResponseEntity<ErrorDetails> handleNullPointerException(Exception exception) {
-        this.error = new ErrorDetails(500, this.convertToList(this.handleNullPointerException));
+        this.error = new ErrorDetails(500, this.convertToList(this.handleNullPointerException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({HttpClientErrorException.UnsupportedMediaType.class})
     public ResponseEntity<ErrorDetails> handleUnsupportedMediaType(Exception exception) {
-        this.error = new ErrorDetails(500, this.convertToList(this.unsupportedMediaType));
+        this.error = new ErrorDetails(500, this.convertToList(this.unsupportedMediaType), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({InvalidDataAccessResourceUsageException.class})
     public ResponseEntity<ErrorDetails> handleInvalidDataAccessResourceUsageException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.invalidDataAccessResourceUsageException));
+        this.error = new ErrorDetails(400, this.convertToList(this.invalidDataAccessResourceUsageException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({InvalidDataAccessApiUsageException.class})
     public ResponseEntity<ErrorDetails> handleInvalidDataAccessApiUsageException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.invalidDataAccessApiUsageException));
+        this.error = new ErrorDetails(400, this.convertToList(this.invalidDataAccessApiUsageException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({DataAccessResourceFailureException.class})
     public ResponseEntity<ErrorDetails> handleDataAccessResourceFailureException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.dataAccessResourceFailureException));
+        this.error = new ErrorDetails(400, this.convertToList(this.dataAccessResourceFailureException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpServerErrorException.GatewayTimeout.class})
     public ResponseEntity<ErrorDetails> handleGatewayTimeout(Exception exception) {
-        this.error = new ErrorDetails(504, this.convertToList(this.gatewayTimeout));
+        this.error = new ErrorDetails(504, this.convertToList(this.gatewayTimeout), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.GATEWAY_TIMEOUT);
     }
 
     @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<ErrorDetails> handleDataIntegrityViolationException(Exception exception) {
-        this.error = new ErrorDetails(400, this.convertToList(this.dataIntegrityViolationException));
+        this.error = new ErrorDetails(400, this.convertToList(this.dataIntegrityViolationException), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({HttpServerErrorException.NotImplemented.class})
     public ResponseEntity<ErrorDetails> handleNotImplemented(Exception exception) {
-        this.error = new ErrorDetails(501, this.convertToList(this.notImplemented));
+        this.error = new ErrorDetails(501, this.convertToList(this.notImplemented), new Date());
         this.logger.error("Exception from common config: ", exception);
         return new ResponseEntity(this.error, HttpStatus.NOT_IMPLEMENTED);
     }
 
     @ExceptionHandler({MissingRequestHeaderException.class})
     public ResponseEntity<ErrorDetails> handleRequestHeader(MissingRequestHeaderException ex) {
-        this.error = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), this.convertToList(ex.getMessage()));
+        this.error = new ErrorDetails(HttpStatus.BAD_REQUEST.value(), this.convertToList(ex.getMessage()), new Date());
         this.logger.error("Exception from common config: ", ex);
         return new ResponseEntity(this.error, HttpStatus.BAD_REQUEST);
     }
@@ -181,6 +182,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         List<String> errors = (List)ex.getBindingResult().getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
         body.put("message", errors);
@@ -199,6 +201,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         body.put("message", this.convertToList(this.httpRequestMethodNotSupported));
         this.logger.error("Exception from common config: ", ex);
@@ -207,6 +210,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         body.put("message", this.convertToList(this.missingPathVariable));
         this.logger.error("Exception from common config: ", ex);
@@ -215,6 +219,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         body.put("message", this.convertToList(this.httpMediaTypeNotAcceptable));
         this.logger.error("Exception from common config: ", ex);
@@ -223,6 +228,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         body.put("message", this.convertToList(this.httpMessageNotReadable));
         this.logger.error("Exception from common config: ", ex);
@@ -231,6 +237,7 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
 
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, Object> body = new LinkedHashMap();
+        body.put("timestamp", new Date());
         body.put("status", status.value());
         body.put("message", this.convertToList(this.missingServletRequestParameter));
         this.logger.error("Exception from common config: ", ex);
@@ -238,6 +245,6 @@ public abstract class SystemException extends ResponseEntityExceptionHandler {
     }
 
     protected List<String> convertToList(String message) {
-        return Stream.of(message.split("\\|")).collect(Collectors.toList());
+        return (List)Stream.of(message.split("\\|")).collect(Collectors.toList());
     }
 }
