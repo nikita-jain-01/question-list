@@ -23,12 +23,17 @@ public class MastersDaoImpl implements MastersDao {
     }
 
     @Override
-    public boolean existsMimCodeAndValue(String mimCode, String mimCodeValue, String createdBy) {
-        return mastersRepository.existsByMimCodeIgnoreCaseAndMimCodeValueIgnoreCaseAndCreatedByIgnoreCaseAndIsDeletedIgnoreCaseNot(mimCode, mimCodeValue, createdBy, "Y");
+    public boolean existsMimCodeAndValue(String mimCode, String mimCodeValue, String createdBy, Long masterId) {
+        return mastersRepository.existsByMimCodeIgnoreCaseAndMimCodeValueIgnoreCaseAndCreatedByIgnoreCaseAndMasterIdNot(mimCode, mimCodeValue, createdBy, masterId)>0;
     }
 
     @Override
     public Optional<MastersEntity> findMasterDetails(Long masterId) {
         return mastersRepository.findByMasterIdAndIsDeletedNotIgnoreCase(masterId, "Y");
+    }
+
+    @Override
+    public void deleteMaster(Long masterId) {
+        mastersRepository.deleteById(masterId);
     }
 }

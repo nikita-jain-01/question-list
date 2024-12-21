@@ -1,6 +1,7 @@
 package ltr.org.questionlist.beans;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

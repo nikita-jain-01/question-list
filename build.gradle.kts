@@ -48,9 +48,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.3")
     implementation("org.postgresql:postgresql:42.7.3")
     implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+    implementation("org.modelmapper:modelmapper:3.1.1")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
-    implementation("org.modelmapper:modelmapper:3.1.1")
 }
 
 tasks.test {
