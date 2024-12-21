@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -29,7 +30,7 @@ public class MastersService {
     public ServiceResponse createMaster(MasterRequestBean masterRequestBean) {
         if(masterRequestBean.getMasterId()!=null || !ObjectUtils.isEmpty(masterRequestBean.getMasterId()))
             throw new UserValidationException("Master Id should be null during creation");
-        if(mastersDao.existsMimCodeAndValue(masterRequestBean.getMimCode(), masterRequestBean.getMimCodeValue(), masterRequestBean.getCreatedBy()))
+        if(mastersDao.existsMimCodeAndValue(masterRequestBean.getMimCode(), masterRequestBean.getMimCodeValue(), masterRequestBean.getCreatedBy(), masterRequestBean.getMasterId()))
             throw new UserValidationException("Same Mim Code Value already exist against same Mim code");
         MastersEntity mastersEntity = new ModelMapper().map(masterRequestBean, MastersEntity.class);
         mastersDao.saveMaster(mastersEntity);
@@ -38,13 +39,15 @@ public class MastersService {
                 .status(HttpStatus.CREATED.value())
                 .data(masterResponseBean)
                 .message("Master Created Successfully")
+                .timeStamp(LocalDateTime.now())
                 .build();
     }
 
+    @Transactional
     public ServiceResponse updateMaster(MasterRequestBean masterRequestBean) {
         if(masterRequestBean.getMasterId()==null || ObjectUtils.isEmpty(masterRequestBean.getMasterId()))
             throw new UserValidationException("Master Id should not be null during creation");
-        if(mastersDao.existsMimCodeAndValue(masterRequestBean.getMimCode(), masterRequestBean.getMimCodeValue(), masterRequestBean.getCreatedBy()))
+        if(mastersDao.existsMimCodeAndValue(masterRequestBean.getMimCode(), masterRequestBean.getMimCodeValue(), masterRequestBean.getCreatedBy(), masterRequestBean.getMasterId()))
             throw new UserValidationException("Same Mim Code Value already exist against same Mim code");
         Optional<MastersEntity> masterEntity = mastersDao.findMasterDetails(masterRequestBean.getMasterId());
         if(ObjectUtils.isEmpty(masterEntity))
@@ -53,9 +56,25 @@ public class MastersService {
         mastersDao.saveMaster(mastersEntity);
         MasterResponseBean masterResponseBean = new ModelMapper().map(mastersEntity, MasterResponseBean.class);
         return ServiceResponse.builder()
-                .status(HttpStatus.CREATED.value())
+                .status(HttpStatus.OK.value())
                 .data(masterResponseBean)
                 .message("Master Updated Successfully")
+                .timeStamp(LocalDateTime.now())
+                .build();
+    }
+
+    @Transactional
+    public ServiceResponse deleteMaster(Long masterId) {
+        if(masterId==null || ObjectUtils.isEmpty(masterId))
+            throw new UserValidationException("Master Id should not be null during creation");
+        Optional<MastersEntity> masterEntity = mastersDao.findMasterDetails(masterId);
+        if(ObjectUtils.isEmpty(masterEntity))
+            throw new UserValidationException("This Master does not exist");
+        mastersDao.deleteMaster(masterId);
+        return ServiceResponse.builder()
+                .status(HttpStatus.OK.value())
+                .message("Master Deleted Successfully")
+                .timeStamp(LocalDateTime.now())
                 .build();
     }
 }

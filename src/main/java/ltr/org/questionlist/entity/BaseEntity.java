@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @MappedSuperclass
@@ -16,14 +17,14 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseEntity {
-    @Column(name = "created_by")
+    @Column(name = "CREATED_BY")
     private String createdBy;
-    @Column(name = "creation_date_time", updatable = false)
+    @Column(name = "CREATION_DATE_TIME", updatable = false)
     @CreationTimestamp
     private LocalDateTime creationDateTime;
-    @Column(name = "update_date_time")
+    @Column(name = "UPDATE_DATE_TIME")
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
-    @Column(name = "is_deleted")
+    @Column(name = "IS_DELETED")
     private String isDeleted;
 }

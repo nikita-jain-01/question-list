@@ -5,7 +5,6 @@ import ltr.org.questionlist.beans.MasterRequestBean;
 import ltr.org.questionlist.beans.ServiceResponse;
 import ltr.org.questionlist.service.MastersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +31,13 @@ public class MastersController {
     @PutMapping(value = "/updateMaster", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ServiceResponse> updateMaster(@Valid @RequestBody MasterRequestBean masterRequestBean) {
         ServiceResponse serviceResponse = mastersService.updateMaster(masterRequestBean);
+        return ResponseEntity.status(serviceResponse.getStatus())
+                .body(serviceResponse);
+    }
+
+    @DeleteMapping(value = "/deleteMaster/{masterId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ServiceResponse> deleteMaster(@RequestParam Long masterId) {
+        ServiceResponse serviceResponse = mastersService.deleteMaster(masterId);
         return ResponseEntity.status(serviceResponse.getStatus())
                 .body(serviceResponse);
     }
